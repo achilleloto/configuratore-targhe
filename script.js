@@ -1,27 +1,14 @@
-document.getElementById('app').innerHTML = `
-  <div class="space-y-4">
-    <h1 class="text-2xl font-bold text-center">Configuratore Targa</h1>
-    
-    <!-- Sezione Colore -->
-    <div>
-      <h2 class="font-semibold mb-2">Colore:</h2>
-      <div class="flex gap-4">
-        <button class="border p-2 rounded-lg">
-          <img src="https://cdn.shopify.com/.../oro.jpg" class="w-20 h-auto">
-        </button>
-        <button class="border p-2 rounded-lg">
-          <img src="https://cdn.shopify.com/.../argento.jpg" class="w-20 h-auto">
-        </button>
-      </div>
-    </div>
+function cambiaColore(colore) {
+  document.querySelector('.targa-preview').style.backgroundImage = 
+    `url('https://cdn.shopify.com/s/files/1/0871/1431/8172/files/${colore}.jpg')`;
+}
 
-    <!-- Pulsante -->
-    <button onclick="addToCart()" class="w-full bg-blue-500 text-white py-2 rounded">
-      Aggiungi al Carrello (€13.90)
-    </button>
-  </div>
-`;
+function aggiornaAnteprima() {
+  const testo = document.getElementById('testo-targa').value;
+  document.getElementById('anteprima-testo').textContent = testo;
+}
 
-function addToCart() {
-  alert("Funzionalità carrello in sviluppo!");
+function aggiungiAlCarrello() {
+  alert('Prodotto aggiunto al carrello!');
+  // Qui aggiungerai la logica Shopify
 }
