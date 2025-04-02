@@ -8,45 +8,120 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Contenuto identico alla versione precedente -->
-  <!-- ... (mantieni tutto il markup esistente) ... -->
+  <div class="max-w-4xl mx-auto p-4 space-y-6">
+    <div class="card">
+      <div class="card-content">
+        <!-- Header con logo -->
+        <div class="text-center">
+          <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" 
+               alt="Logo Lo Realizzo" class="w-20 h-20 mx-auto mb-2">
+          <h2 class="text-xl font-bold">Personalizza la tua targa</h2>
+        </div>
 
-  <!-- Aggiungi questi nuovi controlli PRIMA del bottone "Salva Anteprima" -->
-  <div class="form-group">
-    <label class="form-label">Fissaggio</label>
-    <select class="mounting-selector">
-      <option value="Biadesivo">Biadesivo</option>
-      <option value="Con fori e biadesivo">Con fori e biadesivo</option>
-    </select>
-  </div>
+        <!-- Controlli principali -->
+        <div class="space-y-4">
+          <!-- Selettore colore -->
+          <div class="form-group">
+            <p class="text-sm text-gray-600 font-medium">Scegli il colore</p>
+            <div class="flex gap-4">
+              <div class="color-option oro active" onclick="cambiaColore('oro')">
+                <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg?v=1732901706" alt="Oro">
+              </div>
+              <div class="color-option argento" onclick="cambiaColore('argento')">
+                <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/argento.jpg?v=1732901706" alt="Argento">
+              </div>
+            </div>
+          </div>
 
-  <div class="form-group">
-    <label class="form-label">Quantità</label>
-    <input type="number" class="quantity-input" min="1" value="1">
-  </div>
+          <!-- Input testo -->
+          <div class="form-group">
+            <label class="block font-medium">Testo (max 3 righe, 32 caratteri)</label>
+            <input type="text" class="text-input" placeholder="Riga 1" maxlength="32" data-line="0">
+            <input type="text" class="text-input" placeholder="Riga 2" maxlength="32" data-line="1">
+            <input type="text" class="text-input" placeholder="Riga 3" maxlength="32" data-line="2">
+          </div>
 
-  <div class="form-group">
-    <label class="form-label">Targhetta citofono (facoltativa)</label>
-    <button class="toggle-intercom">Aggiungi targhetta citofono (+3,99 €)</button>
-    <div class="intercom-fields" style="display:none">
-      <input type="text" class="intercom-input" placeholder="Riga 1 - Citofono" maxlength="36">
-      <input type="text" class="intercom-input" placeholder="Riga 2 - Citofono" maxlength="30">
-      <div class="intercom-preview"></div>
+          <!-- Selettore font -->
+          <div class="form-group">
+            <label class="block font-medium">Font</label>
+            <select class="font-selector">
+              <option value="Caveat">Caveat</option>
+              <option value="Lato">Lato</option>
+              <option value="Allura">Allura</option>
+              <option value="Roboto">Roboto</option>
+            </select>
+          </div>
+
+          <!-- Switch decori -->
+          <div class="flex items-center gap-2">
+            <label class="switch">
+              <input type="checkbox" class="decor-checkbox">
+              <span class="slider"></span>
+            </label>
+            <label>Aggiungi decori (+1,90 €)</label>
+          </div>
+
+          <!-- Selettore fissaggio -->
+          <div class="form-group">
+            <label class="block font-medium">Fissaggio</label>
+            <select class="mounting-selector">
+              <option>Biadesivo</option>
+              <option>Con fori e biadesivo</option>
+            </select>
+          </div>
+
+          <!-- Input quantità -->
+          <div class="form-group">
+            <label class="block font-medium">Quantità</label>
+            <input type="number" class="quantity-input" min="1" value="1">
+          </div>
+
+          <!-- Sezione citofono -->
+          <div class="citofono-section">
+            <h3 class="text-md font-semibold">Targhetta per il citofono <span class="italic font-normal">(facoltativo)</span></h3>
+            <button class="toggle-citofono">Aggiungi una targhetta per il citofono (+3,99 €)</button>
+            <div class="citofono-fields" style="display:none">
+              <input type="text" class="citofono-input" placeholder="Riga 1 - Citofono" maxlength="36">
+              <input type="text" class="citofono-input" placeholder="Riga 2 - Citofono" maxlength="30">
+              <div class="citofono-preview oro"></div>
+            </div>
+          </div>
+
+          <!-- Campo WhatsApp -->
+          <div class="form-group">
+            <label class="block font-medium">Numero WhatsApp</label>
+            <input type="tel" class="whatsapp-input" placeholder="Es. +39 345 1234567">
+            <p class="text-xs text-gray-500 mt-1">Per eventuali chiarimenti</p>
+          </div>
+
+          <!-- Anteprima -->
+          <div class="preview-container" id="anteprima">
+            <img class="targa-image oro" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg?v=1732901706">
+            <img class="decor-image" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/decori.png?v=1732901706" style="display:none">
+            <div class="text-preview Caveat">
+              <div class="text-line">Riga 1</div>
+              <div class="text-line">Riga 2</div>
+              <div class="text-line">Riga 3</div>
+            </div>
+          </div>
+
+          <!-- Prezzo totale -->
+          <div class="total-price text-lg font-bold text-center">
+            Totale da pagare: € <span>13.90</span>
+          </div>
+
+          <!-- Campo note -->
+          <div class="form-group">
+            <label class="block font-medium">Note</label>
+            <textarea class="notes-input" rows="3" placeholder="Scrivi qui eventuali richieste particolari..."></textarea>
+          </div>
+
+          <!-- Pulsante download -->
+          <button class="download-btn">Salva Anteprima</button>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="form-group">
-    <label class="form-label">Numero WhatsApp</label>
-    <input type="tel" class="whatsapp-input" placeholder="Es. +39 345 1234567">
-    <p class="hint">Per eventuali chiarimenti sulla personalizzazione</p>
-  </div>
-
-  <div class="form-group">
-    <label class="form-label">Note</label>
-    <textarea class="notes-input" rows="3" placeholder="Richiesta particolari..."></textarea>
-  </div>
-
-  <div class="total-price">Totale: € <span>13.90</span></div>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src="script.js"></script>
