@@ -1,95 +1,122 @@
-document.getElementById("app").innerHTML = `
-  <h2 style="text-align:center;">Personalizza la tua targa</h2>
-  <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" alt="Logo" style="width:80px;margin:auto;display:block;" />
-  <label>Colore targa</label>
-  <select id="colore">
-    <option value="oro">Oro</option>
-    <option value="argento">Argento</option>
-  </select>
+const fonts = ['Caveat', 'Lato', 'Allura', 'Roboto'];
+const basePrice = 13.90;
+const decoriPrice = 1.90;
+const citofonoPrice = 3.99;
 
-  <label>Font</label>
-  <select id="font">
-    <option value="Caveat">Caveat</option>
-    <option value="Lato">Lato</option>
-    <option value="Allura">Allura</option>
-    <option value="Roboto">Roboto</option>
-  </select>
+let colore = 'oro';
+let decori = false;
+let fissaggio = 'Biadesivo';
+let quantita = 1;
+let testo = ['', '', ''];
+let font = 'Caveat';
+let mostraCitofono = false;
+let citofono1 = '';
+let citofono2 = '';
+let numeroWhatsapp = '';
 
-  <label>Testo riga 1</label>
-  <input type="text" id="riga1" maxlength="32" />
-  <label>Testo riga 2</label>
-  <input type="text" id="riga2" maxlength="32" />
-  <label>Testo riga 3</label>
-  <input type="text" id="riga3" maxlength="32" />
+const anteprimaRef = document.getElementById('anteprima');
+const totaleEl = document.getElementById('totale');
+const fontLink = document.getElementById('font-link');
 
-  <label>Fissaggio</label>
-  <select id="fissaggio">
-    <option>Biadesivo</option>
-    <option>Con fori e biadesivo</option>
-  </select>
+function aggiornaFont() {
+  fontLink.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, '+')}&display=swap`;
+  document.documentElement.style.setProperty('--font-family', `'${font}', sans-serif`);
+}
 
-  <label>Quantità</label>
-  <input type="number" id="quantita" value="1" min="1" />
-
-  <label>
-    <input type="checkbox" id="decori" /> Aggiungi decori (+1,90 €)
-  </label>
-
-  <label>
-    <input type="checkbox" id="citofonoToggle" /> Aggiungi una targhetta per il citofono (+3,99 €)
-  </label>
-
-  <div id="citofonoBox" style="display:none;">
-    <label>Riga 1 Citofono</label>
-    <input type="text" id="citofono1" maxlength="30" />
-    <label>Riga 2 Citofono</label>
-    <input type="text" id="citofono2" maxlength="30" />
-  </div>
-
-  <label>Numero WhatsApp</label>
-  <input type="tel" id="numeroWhatsapp" placeholder="+39..." />
-
-  <label>Note per il venditore</label>
-  <textarea id="note" rows="3"></textarea>
-
-  <div id="anteprima" style="margin-top:24px; border:1px solid #ccc; padding:20px; text-align:center;">
-    <div id="targa" style="background-color:#eee; padding:20px; font-size:24px;"></div>
-  </div>
-
-  <button onclick="aggiornaAnteprima()">Aggiorna anteprima</button>
-  <button onclick="scaricaAnteprima()">Scarica anteprima</button>
-  <div style="text-align:center; font-weight:bold; font-size:20px; margin-top:20px;" id="totale">Totale: € 13.90</div>
-`;
-
-document.getElementById("citofonoToggle").addEventListener("change", (e) => {
-  document.getElementById("citofonoBox").style.display = e.target.checked ? "block" : "none";
-});
+function aggiornaTotale() {
+  const totale = (
+    basePrice +
+    (decori ? decoriPrice : 0) +
+    (mostraCitofono ? citofonoPrice : 0)
+  ) * quantita;
+  totaleEl.textContent = `Totale da pagare: € ${totale.toFixed(2)}`;
+}
 
 function aggiornaAnteprima() {
-  const colore = document.getElementById("colore").value;
-  const font = document.getElementById("font").value;
-  const r1 = document.getElementById("riga1").value;
-  const r2 = document.getElementById("riga2").value;
-  const r3 = document.getElementById("riga3").value;
-  const decori = document.getElementById("decori").checked;
-  const citofono = document.getElementById("citofonoToggle").checked;
-  const quantita = parseInt(document.getElementById("quantita").value);
+  const sfondo = document.getElementById('targa-sfondo');
+  const decoriImg = document.getElementById('decori-img');
+  const testoEl = document.getElementById('testo-righe');
 
-  const base = 13.90;
-  const d = decori ? 1.90 : 0;
-  const c = citofono ? 3.99 : 0;
-  const totale = ((base + d + c) * quantita).toFixed(2);
-  document.getElementById("totale").innerText = "Totale: € " + totale;
+  sfondo.src = `https://cdn.shopify.com/s/files/1/0871/1431/8172/files/${colore}.jpg?v=${Date.now()}`;
 
-  const targaDiv = document.getElementById("targa");
-  targaDiv.innerHTML = `<div style="font-family:${font};">${r1}<br/>${r2}<br/>${r3}</div>`;
+  if (decori) {
+    decoriImg.style.display = 'block';
+    decoriImg.src = `https://cdn.shopify.com/s/files/1/0871/1431/8172/files/decori.png?v=${Date.now()}`;
+  } else {
+    decoriImg.style.display = 'none';
+  }
+
+  testoEl.innerHTML = '';
+  testo.forEach(riga => {
+    const rigaEl = document.createElement('div');
+    rigaEl.textContent = riga;
+    rigaEl.className = ['Lato', 'Roboto'].includes(font)
+      ? 'testo-riga lato-roboto'
+      : 'testo-riga default';
+    testoEl.appendChild(rigaEl);
+  });
+
+  aggiornaTotale();
 }
 
-function scaricaAnteprima() {
-  html2canvas(document.getElementById("anteprima")).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "anteprima-targa.png";
-    link.href = canvas.toDataURL();
-    link.click();
+function setupEventListeners() {
+  document.querySelectorAll('[data-colore]').forEach(el => {
+    el.addEventListener('click', () => {
+      colore = el.dataset.colore;
+      aggiornaAnteprima();
+    });
+  });
+
+  document.getElementById('decori-switch').addEventListener('change', (e) => {
+    decori = e.target.checked;
+    aggiornaAnteprima();
+  });
+
+  document.getElementById('fissaggio').addEventListener('change', (e) => {
+    fissaggio = e.target.value;
+  });
+
+  document.getElementById('quantita').addEventListener('input', (e) => {
+    quantita = parseInt(e.target.value) || 1;
+    aggiornaTotale();
+  });
+
+  document.querySelectorAll('.riga-input').forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      testo[index] = e.target.value;
+      aggiornaAnteprima();
+    });
+  });
+
+  document.getElementById('font').addEventListener('change', (e) => {
+    font = e.target.value;
+    aggiornaFont();
+    aggiornaAnteprima();
+  });
+
+  document.getElementById('toggle-citofono').addEventListener('click', () => {
+    mostraCitofono = !mostraCitofono;
+    document.getElementById('citofono-fields').style.display = mostraCitofono ? 'block' : 'none';
+    aggiornaAnteprima();
+  });
+
+  document.getElementById('citofono1').addEventListener('input', (e) => {
+    citofono1 = e.target.value;
+    document.getElementById('anteprima-citofono1').textContent = citofono1;
+  });
+
+  document.getElementById('citofono2').addEventListener('input', (e) => {
+    citofono2 = e.target.value;
+    document.getElementById('anteprima-citofono2').textContent = citofono2;
+  });
+
+  document.getElementById('numeroWhatsapp').addEventListener('input', (e) => {
+    numeroWhatsapp = e.target.value;
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  aggiornaFont();
+  aggiornaAnteprima();
+  setupEventListeners();
+});
