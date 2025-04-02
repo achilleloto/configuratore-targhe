@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuratore Targhe</title>
+  <title>Configuratore Targhe - Lo Realizzo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
+    <!-- Header con logo -->
+    <header>
+      <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" 
+           alt="Lo Realizzo" class="logo">
+    </header>
+
     <!-- Anteprima targa -->
     <div id="anteprima" class="targa-container oro">
       <div id="testoTarga" class="testo-targa" style="font-family: 'Caveat'">
@@ -16,7 +22,8 @@
         <div>Linea 2</div>
         <div>Linea 3</div>
       </div>
-      <img id="decorazioni" src="assets/decori.png" class="decori" style="display: none">
+      <img id="decorazioni" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/decori.png?v=1732901706" 
+           class="decori" style="display:none">
     </div>
 
     <!-- Pannello controllo -->
@@ -31,11 +38,12 @@
         </div>
       </div>
 
-      <!-- Aggiungi qui gli altri controlli -->
+      <!-- Altri controlli qui -->
       <button onclick="salvaAnteprima()" class="btn-download">Salva Anteprima</button>
     </div>
   </div>
 
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
