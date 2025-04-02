@@ -1,12 +1,35 @@
-/* Stili aggiuntivi se necessari */
-#targa-preview {
-  transition: all 0.3s ease;
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
 }
 
-#citofono-preview {
-  transition: transform 0.2s;
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
-#citofono-preview:hover {
-  transform: scale(1.05);
+label, select, input, textarea, button {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+}
+
+button {
+  background-color: #facc15;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+button:hover {
+  background-color: #eab308;
 }
