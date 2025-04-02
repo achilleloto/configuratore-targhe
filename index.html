@@ -4,42 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuratore Targhe - Lo Realizzo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&family=Allura&family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Header con logo -->
-    <header>
-      <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" 
-           alt="Lo Realizzo" class="logo">
-    </header>
+  <div class="main-container">
+    <div class="card">
+      <div class="card-content">
+        <!-- Header con logo -->
+        <div class="text-center">
+          <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" 
+               alt="Lo Realizzo" class="logo">
+          <h2>Personalizza la tua targa</h2>
+        </div>
 
-    <!-- Anteprima targa -->
-    <div id="anteprima" class="targa-container oro">
-      <div id="testoTarga" class="testo-targa" style="font-family: 'Caveat'">
-        <div>Linea 1</div>
-        <div>Linea 2</div>
-        <div>Linea 3</div>
-      </div>
-      <img id="decorazioni" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/decori.png?v=1732901706" 
-           class="decori" style="display:none">
-    </div>
+        <!-- Controlli -->
+        <div class="controls">
+          <!-- Selettore colore -->
+          <div class="form-group">
+            <label class="form-label">Scegli il colore</label>
+            <div class="color-options">
+              <div class="color-option active" data-color="oro">
+                <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg?v=1732901706" alt="Oro">
+              </div>
+              <div class="color-option" data-color="argento">
+                <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/argento.jpg?v=1732901706" alt="Argento">
+              </div>
+            </div>
+          </div>
 
-    <!-- Pannello controllo -->
-    <div class="controls">
-      <h1>Personalizza la tua targa</h1>
-      
-      <div class="form-group">
-        <label>Colore:</label>
-        <div class="color-options">
-          <button onclick="cambiaColore('oro')" class="active">Oro</button>
-          <button onclick="cambiaColore('argento')">Argento</button>
+          <!-- Input testo -->
+          <div class="form-group">
+            <label class="form-label">Testo (max 3 righe, 32 caratteri)</label>
+            <input type="text" class="text-input" placeholder="Riga 1" maxlength="32" data-line="0">
+            <input type="text" class="text-input" placeholder="Riga 2" maxlength="32" data-line="1">
+            <input type="text" class="text-input" placeholder="Riga 3" maxlength="32" data-line="2">
+          </div>
+
+          <!-- Selettore font -->
+          <div class="form-group">
+            <label class="form-label">Font</label>
+            <select class="font-selector">
+              <option value="Caveat">Caveat</option>
+              <option value="Lato">Lato</option>
+              <option value="Allura">Allura</option>
+              <option value="Roboto">Roboto</option>
+            </select>
+          </div>
+
+          <!-- Opzioni aggiuntive -->
+          <div class="form-group">
+            <label class="switch">
+              <input type="checkbox" class="decor-checkbox">
+              <span class="slider"></span>
+            </label>
+            <span>Aggiungi decori (+1,90 €)</span>
+          </div>
+
+          <!-- Anteprima -->
+          <div class="preview-container" id="anteprima">
+            <div class="targa-image oro"></div>
+            <div class="decor-image" style="display:none"></div>
+            <div class="text-preview Caveat">
+              <div class="text-line">Riga 1</div>
+              <div class="text-line">Riga 2</div>
+              <div class="text-line">Riga 3</div>
+            </div>
+          </div>
+
+          <!-- Pulsanti -->
+          <button class="download-btn">Salva Anteprima</button>
         </div>
       </div>
-
-      <!-- Altri controlli qui -->
-      <button onclick="salvaAnteprima()" class="btn-download">Salva Anteprima</button>
     </div>
   </div>
 
