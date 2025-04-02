@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuratore Targa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&family=Allura&family=Roboto&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuratore Targhe</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="app"></div>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <div class="container">
+    <!-- Anteprima targa -->
+    <div id="anteprima" class="targa-container oro">
+      <div id="testoTarga" class="testo-targa" style="font-family: 'Caveat'">
+        <div>Linea 1</div>
+        <div>Linea 2</div>
+        <div>Linea 3</div>
+      </div>
+      <img id="decorazioni" src="assets/decori.png" class="decori" style="display: none">
+    </div>
+
+    <!-- Pannello controllo -->
+    <div class="controls">
+      <h1>Personalizza la tua targa</h1>
+      
+      <div class="form-group">
+        <label>Colore:</label>
+        <div class="color-options">
+          <button onclick="cambiaColore('oro')" class="active">Oro</button>
+          <button onclick="cambiaColore('argento')">Argento</button>
+        </div>
+      </div>
+
+      <!-- Aggiungi qui gli altri controlli -->
+      <button onclick="salvaAnteprima()" class="btn-download">Salva Anteprima</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
