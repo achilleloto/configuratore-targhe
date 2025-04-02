@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Configuratore Targa</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&family=Allura&family=Lato&family=Roboto&display=swap" />
-  </head>
-  <body class="bg-gray-100">
-    <div id="root"></div>
-    <script type="module" src="script.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuratore Targa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&family=Allura&family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="logo-section">
+      <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" alt="Logo Lo Realizzo">
+      <h2>Personalizza la tua targa</h2>
+    </div>
+
+    <div class="form-section">
+      <label>Scegli il colore</label>
+      <div class="color-picker">
+        <div class="color-option" data-color="oro"><img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg" alt="Oro"></div>
+        <div class="color-option" data-color="argento"><img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/argento.jpg" alt="Argento"></div>
+      </div>
+
+      <label>Testo (max 3 righe, 32 caratteri)</label>
+      <input type="text" id="riga1" maxlength="32" placeholder="Riga 1">
+      <input type="text" id="riga2" maxlength="32" placeholder="Riga 2">
+      <input type="text" id="riga3" maxlength="32" placeholder="Riga 3">
+
+      <label>Font</label>
+      <select id="font-selector">
+        <option value="Caveat">Caveat</option>
+        <option value="Lato">Lato</option>
+        <option value="Allura">Allura</option>
+        <option value="Roboto">Roboto</option>
+      </select>
+
+      <label><input type="checkbox" id="decori"> Aggiungi decori (+1,90 €)</label>
+
+      <label>Fissaggio</label>
+      <select id="fissaggio">
+        <option>Biadesivo</option>
+        <option>Con fori e biadesivo</option>
+      </select>
+
+      <label>Quantità</label>
+      <input type="number" id="quantita" value="1" min="1">
+
+      <label>Targhetta per il citofono (facoltativo)</label>
+      <button id="toggleCitofono">Aggiungi una targhetta per il citofono (+3,99 €)</button>
+      <div id="citofonoFields" style="display:none">
+        <input type="text" id="citofono1" placeholder="Riga 1 - Citofono" maxlength="36">
+        <input type="text" id="citofono2" placeholder="Riga 2 - Citofono" maxlength="30">
+      </div>
+
+      <label>Fornisci un numero WhatsApp</label>
+      <input type="tel" id="numeroWhatsapp" placeholder="Es. +39 345 1234567">
+
+      <label>Note per il venditore</label>
+      <textarea id="note" rows="3" placeholder="Scrivi qui eventuali richieste particolari..."></textarea>
+
+      <div class="preview" id="anteprima">
+        <p class="nota">Nota: La visualizzazione fornisce un’anteprima approssimativa. Saranno i nostri grafici a sistemare e centrare bene i testi.</p>
+        <!-- l'immagine e il testo saranno generati con js -->
+      </div>
+
+      <div class="totale">Totale da pagare: <span id="prezzo">13.90</span> €</div>
+
+      <button id="aggiungiCarrello">Aggiungi al carrello</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
