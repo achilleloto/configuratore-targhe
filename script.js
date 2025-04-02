@@ -1,128 +1,152 @@
-// script.js
-document.addEventListener('DOMContentLoaded', function() {
-  // Stato dell'applicazione
-  const state = {
-    colore: 'oro',
-    testo: ['', '', ''],
-    font: 'Caveat',
-    decori: false,
-    mostraCitofono: false,
-    citofono1: '',
-    citofono2: '',
-    numeroWhatsapp: '',
-    fissaggio: 'Biadesivo',
-    quantita: 1
-  };
+// Stato globale
+const state = {
+  colore: 'oro',
+  testo: ['', '', ''],
+  font: 'Caveat',
+  decori: false,
+  fissaggio: 'Biadesivo',
+  quantita: 1,
+  mostraCitofono: false,
+  citofono: ['', ''],
+  numeroWhatsapp: '',
+  note: ''
+};
 
-  // Prezzi
-  const prezzi = {
-    base: 13.90,
-    decori: 1.90,
-    citofono: 3.99
-  };
+// Prezzi
+const PREZZI = {
+  base: 13.90,
+  decori: 1.90,
+  citofono: 3.99
+};
 
-  // Elementi DOM
-  const elements = {
-    anteprima: document.getElementById('anteprima'),
+// Inizializzazione
+document.addEventListener('DOMContentLoaded', () => {
+  // Selezionatori DOM
+  const dom = {
     colorOptions: document.querySelectorAll('.color-option'),
     textInputs: document.querySelectorAll('.text-input'),
     fontSelector: document.querySelector('.font-selector'),
     decorCheckbox: document.querySelector('.decor-checkbox'),
-    downloadBtn: document.querySelector('.download-btn'),
-    targaImage: document.querySelector('.targa-image'),
-    decorImage: document.querySelector('.decor-image'),
-    textPreview: document.querySelector('.text-preview')
+    mountingSelector: document.querySelector('.mounting-selector'),
+    quantityInput: document.querySelector('.quantity-input'),
+    intercomToggle: document.querySelector('.toggle-intercom'),
+    intercomFields: document.querySelector('.intercom-fields'),
+    intercomInputs: document.querySelectorAll('.intercom-input'),
+    whatsappInput: document.querySelector('.whatsapp-input'),
+    notesInput: document.querySelector('.notes-input'),
+    totalPrice: document.querySelector('.total-price span'),
+    downloadBtn: document.querySelector('.download-btn')
   };
 
-  // Inizializzazione
-  init();
+  // Event listeners
+  dom.colorOptions.forEach(opt => opt.addEventListener('click', updateColor));
+  dom.textInputs.forEach(input => input.addEventListener('input', updateText));
+  dom.fontSelector.addEventListener('change', updateFont);
+  dom.decorCheckbox.addEventListener('change', updateDecor);
+  dom.mountingSelector.addEventListener('change', updateMounting);
+  dom.quantityInput.addEventListener('input', updateQuantity);
+  dom.intercomToggle.addEventListener('click', toggleIntercom);
+  dom.intercomInputs.forEach(input => input.addEventListener('input', updateIntercom));
+  dom.whatsappInput.addEventListener('input', updateWhatsapp);
+  dom.notesInput.addEventListener('input', updateNotes);
+  dom.downloadBtn.addEventListener('click', savePreview);
 
-  function init() {
-    // Event listeners
-    elements.colorOptions.forEach(option => {
-      option.addEventListener('click', handleColorChange);
-    });
-
-    elements.textInputs.forEach(input => {
-      input.addEventListener('input', handleTextChange);
-    });
-
-    elements.fontSelector.addEventListener('change', handleFontChange);
-    elements.decorCheckbox.addEventListener('change', handleDecorChange);
-    elements.downloadBtn.addEventListener('click', handleDownload);
-
-    // Carica lo stato iniziale
-    updateUI();
-  }
-
-  function handleColorChange(e) {
-    const color = e.currentTarget.dataset.color;
-    state.colore = color;
-    
-    // Aggiorna classi attive
-    elements.colorOptions.forEach(option => {
-      option.classList.toggle('active', option.dataset.color === color);
-    });
-    
-    updateUI();
-  }
-
-  function handleTextChange(e) {
-    const lineIndex = parseInt(e.target.dataset.line);
-    state.testo[lineIndex] = e.target.value;
-    updateTextPreview();
-  }
-
-  function handleFontChange(e) {
-    state.font = e.target.value;
-    updateTextPreview();
-  }
-
-  function handleDecorChange(e) {
-    state.decori = e.target.checked;
-    elements.decorImage.style.display = state.decori ? 'block' : 'none';
-    updatePrice();
-  }
-
-  function handleDownload() {
-    html2canvas(elements.anteprima).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'anteprima-targa.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-
-  function updateUI() {
-    // Aggiorna immagine targa
-    elements.targaImage.className = `targa-image ${state.colore}`;
-    
-    // Aggiorna testo anteprima
-    updateTextPreview();
-    
-    // Aggiorna prezzo
-    updatePrice();
-  }
-
-  function updateTextPreview() {
-    // Aggiorna font
-    elements.textPreview.className = `text-preview ${state.font}`;
-    
-    // Aggiorna testo
-    const textLines = elements.textPreview.querySelectorAll('.text-line');
-    state.testo.forEach((line, index) => {
-      textLines[index].textContent = line || (index === 0 ? 'Esempio testo' : '');
-    });
-  }
-
-  function updatePrice() {
-    // Calcola prezzo totale
-    let totale = prezzi.base;
-    if (state.decori) totale += prezzi.decori;
-    if (state.mostraCitofono) totale += prezzi.citofono;
-    totale *= state.quantita;
-    
-    console.log('Prezzo totale:', totale.toFixed(2));
-    // Qui puoi aggiornare l'UI con il prezzo
-  }
+  // Inizializza UI
+  updateUI();
 });
+
+// Funzioni di aggiornamento
+function updateColor(e) {
+  state.colore = e.currentTarget.dataset.color;
+  updateUI();
+}
+
+function updateText(e) {
+  const line = parseInt(e.target.dataset.line);
+  state.testo[line] = e.target.value;
+  updateTextPreview();
+}
+
+function updateFont(e) {
+  state.font = e.target.value;
+  document.querySelector('.text-preview').style.fontFamily = state.font;
+}
+
+function updateDecor(e) {
+  state.decori = e.target.checked;
+  document.querySelector('.decor-image').style.display = state.decori ? 'block' : 'none';
+  updatePrice();
+}
+
+function updateMounting(e) {
+  state.fissaggio = e.target.value;
+}
+
+function updateQuantity(e) {
+  state.quantita = Math.max(1, parseInt(e.target.value) || 1);
+  updatePrice();
+}
+
+function toggleIntercom() {
+  state.mostraCitofono = !state.mostraCitofono;
+  const fields = document.querySelector('.intercom-fields');
+  const btn = document.querySelector('.toggle-intercom');
+  
+  fields.style.display = state.mostraCitofono ? 'block' : 'none';
+  btn.textContent = state.mostraCitofono ? 
+    'Rimuovi targhetta citofono' : 
+    'Aggiungi targhetta citofono (+3,99 €)';
+  
+  updatePrice();
+}
+
+function updateIntercom(e) {
+  const line = e.target.placeholder.includes('Riga 1') ? 0 : 1;
+  state.citofono[line] = e.target.value;
+  
+  // Aggiorna anteprima citofono
+  const preview = document.querySelector('.intercom-preview');
+  preview.innerHTML = `
+    <div>${state.citofono[0]}</div>
+    <div>${state.citofono[1]}</div>
+  `;
+}
+
+function updatePrice() {
+  let totale = PREZZI.base;
+  if (state.decori) totale += PREZZI.decori;
+  if (state.mostraCitofono) totale += PREZZI.citofono;
+  totale *= state.quantita;
+  
+  document.querySelector('.total-price span').textContent = totale.toFixed(2);
+}
+
+function savePreview() {
+  html2canvas(document.querySelector('#anteprima')).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `anteprima-targa-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+// Utility
+function updateUI() {
+  // Aggiorna colore
+  document.querySelectorAll('.color-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.color === state.colore);
+  });
+  document.querySelector('.targa-image').className = `targa-image ${state.colore}`;
+  
+  // Aggiorna altri elementi
+  updateTextPreview();
+  updatePrice();
+}
+
+function updateTextPreview() {
+  const container = document.querySelector('.text-preview');
+  container.style.fontFamily = state.font;
+  
+  state.testo.forEach((text, i) => {
+    container.children[i].textContent = text || `Riga ${i+1}`;
+  });
