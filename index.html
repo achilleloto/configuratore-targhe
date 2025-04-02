@@ -1,74 +1,129 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuratore Targa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato&family=Allura&family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configuratore Targhe</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Fonts -->
+  <link id="font-link" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&display=swap">
+
+  <!-- html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <div class="logo-section">
-      <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" alt="Logo Lo Realizzo">
+    <div class="text-center">
+      <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" alt="Logo" class="logo">
       <h2>Personalizza la tua targa</h2>
     </div>
 
-    <div class="form-section">
-      <label>Scegli il colore</label>
-      <div class="color-picker">
-        <div class="color-option" data-color="oro"><img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg" alt="Oro"></div>
-        <div class="color-option" data-color="argento"><img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/argento.jpg" alt="Argento"></div>
+    <!-- Colori -->
+    <div class="section">
+      <p><strong>Scegli il colore:</strong></p>
+      <div class="color-options">
+        <div class="color-box active" data-color="oro">
+          <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg" alt="Oro">
+        </div>
+        <div class="color-box" data-color="argento">
+          <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/argento.jpg" alt="Argento">
+        </div>
       </div>
+    </div>
 
+    <!-- Testi -->
+    <div class="section">
       <label>Testo (max 3 righe, 32 caratteri)</label>
       <input type="text" id="riga1" maxlength="32" placeholder="Riga 1">
       <input type="text" id="riga2" maxlength="32" placeholder="Riga 2">
       <input type="text" id="riga3" maxlength="32" placeholder="Riga 3">
+    </div>
 
+    <!-- Font -->
+    <div class="section">
       <label>Font</label>
-      <select id="font-selector">
+      <select id="font-select">
         <option value="Caveat">Caveat</option>
         <option value="Lato">Lato</option>
         <option value="Allura">Allura</option>
         <option value="Roboto">Roboto</option>
       </select>
+    </div>
 
-      <label><input type="checkbox" id="decori"> Aggiungi decori (+1,90 €)</label>
+    <!-- Decori -->
+    <div class="switch-container">
+      <input type="checkbox" id="decori-toggle" />
+      <label for="decori-toggle">Aggiungi decori (+1,90 €)</label>
+    </div>
 
+    <!-- Fissaggio -->
+    <div class="section">
       <label>Fissaggio</label>
       <select id="fissaggio">
         <option>Biadesivo</option>
         <option>Con fori e biadesivo</option>
       </select>
+    </div>
 
+    <!-- Quantità -->
+    <div class="section">
       <label>Quantità</label>
       <input type="number" id="quantita" value="1" min="1">
+    </div>
 
-      <label>Targhetta per il citofono (facoltativo)</label>
-      <button id="toggleCitofono">Aggiungi una targhetta per il citofono (+3,99 €)</button>
-      <div id="citofonoFields" style="display:none">
+    <!-- Citofono -->
+    <div class="section">
+      <p><strong>Targhetta per il citofono (facoltativo)</strong></p>
+      <p class="text-sm">Scegli se acquistare anche una targhetta per il citofono. È autoadeiva e misura <strong>L 5,5×1,5 cm</strong>. Il colore sarà uguale a quello scelto per la targa fuori porta.</p>
+      <button id="toggle-citofono" class="button">Aggiungi una targhetta per il citofono (+3,99 €)</button>
+      <div id="citofono-section" style="display: none; margin-top: 1rem;">
         <input type="text" id="citofono1" placeholder="Riga 1 - Citofono" maxlength="36">
         <input type="text" id="citofono2" placeholder="Riga 2 - Citofono" maxlength="30">
+        <div class="citofono-preview" id="anteprima-citofono">
+          <div id="citofono-line1"></div>
+          <div id="citofono-line2"></div>
+        </div>
       </div>
+    </div>
 
-      <label>Fornisci un numero WhatsApp</label>
-      <input type="tel" id="numeroWhatsapp" placeholder="Es. +39 345 1234567">
+    <!-- WhatsApp -->
+    <div class="section">
+      <label>Fornisci un numero WhatsApp (in caso di problemi con la personalizzazione)</label>
+      <input type="tel" id="whatsapp" placeholder="Es. +39 345 1234567">
+    </div>
 
+    <!-- Anteprima -->
+    <div class="section">
+      <div id="anteprima">
+        <img id="sfondo-targa" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/oro.jpg" alt="Targa">
+        <img id="decoro-img" src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/decori.png" alt="Decori" style="display: none;">
+        <div id="testo-righe">
+          <div id="r1" class="testo-riga default"></div>
+          <div id="r2" class="testo-riga default"></div>
+          <div id="r3" class="testo-riga default"></div>
+        </div>
+      </div>
+      <p class="text-sm text-center mt-2">Nota: La visualizzazione fornisce un’anteprima approssimativa. Saranno i nostri grafici a sistemare e centrare bene i testi.</p>
+    </div>
+
+    <!-- Totale -->
+    <div class="totale" id="totale">Totale da pagare: € 13.90</div>
+
+    <!-- Note -->
+    <div class="section">
       <label>Note per il venditore</label>
       <textarea id="note" rows="3" placeholder="Scrivi qui eventuali richieste particolari..."></textarea>
+    </div>
 
-      <div class="preview" id="anteprima">
-        <p class="nota">Nota: La visualizzazione fornisce un’anteprima approssimativa. Saranno i nostri grafici a sistemare e centrare bene i testi.</p>
-        <!-- l'immagine e il testo saranno generati con js -->
-      </div>
-
-      <div class="totale">Totale da pagare: <span id="prezzo">13.90</span> €</div>
-
-      <button id="aggiungiCarrello">Aggiungi al carrello</button>
+    <!-- Pulsanti -->
+    <div class="text-center" style="margin-top: 1.5rem;">
+      <button class="button" onclick="downloadAnteprima()">Scarica anteprima</button>
+      <button class="button" style="background:#facc15; margin-left:1rem;">Aggiungi al carrello</button>
     </div>
   </div>
 
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
