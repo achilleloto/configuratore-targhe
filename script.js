@@ -1,93 +1,95 @@
-// Prezzi base
-const PREZZO_BASE = 13.90;
-const PREZZO_DECORAZIONI = 1.90;
-const PREZZO_CITOFONO = 3.99;
+document.getElementById("app").innerHTML = `
+  <h2 style="text-align:center;">Personalizza la tua targa</h2>
+  <img src="https://cdn.shopify.com/s/files/1/0871/1431/8172/files/LOGO_LO_REALIZZO-Photoroom.png?v=1732901706" alt="Logo" style="width:80px;margin:auto;display:block;" />
+  <label>Colore targa</label>
+  <select id="colore">
+    <option value="oro">Oro</option>
+    <option value="argento">Argento</option>
+  </select>
 
-// Stato configurazione
-let config = {
-  colore: 'oro',
-  testo: '',
-  font: "'Caveat', cursive",
-  decorazioni: false,
-  citofono: false,
-  testoCitofono: ['', '']
-};
+  <label>Font</label>
+  <select id="font">
+    <option value="Caveat">Caveat</option>
+    <option value="Lato">Lato</option>
+    <option value="Allura">Allura</option>
+    <option value="Roboto">Roboto</option>
+  </select>
 
-// Inizializzazione
-document.addEventListener('DOMContentLoaded', () => {
-  aggiornaAnteprima();
-  calcolaPrezzo();
+  <label>Testo riga 1</label>
+  <input type="text" id="riga1" maxlength="32" />
+  <label>Testo riga 2</label>
+  <input type="text" id="riga2" maxlength="32" />
+  <label>Testo riga 3</label>
+  <input type="text" id="riga3" maxlength="32" />
+
+  <label>Fissaggio</label>
+  <select id="fissaggio">
+    <option>Biadesivo</option>
+    <option>Con fori e biadesivo</option>
+  </select>
+
+  <label>Quantità</label>
+  <input type="number" id="quantita" value="1" min="1" />
+
+  <label>
+    <input type="checkbox" id="decori" /> Aggiungi decori (+1,90 €)
+  </label>
+
+  <label>
+    <input type="checkbox" id="citofonoToggle" /> Aggiungi una targhetta per il citofono (+3,99 €)
+  </label>
+
+  <div id="citofonoBox" style="display:none;">
+    <label>Riga 1 Citofono</label>
+    <input type="text" id="citofono1" maxlength="30" />
+    <label>Riga 2 Citofono</label>
+    <input type="text" id="citofono2" maxlength="30" />
+  </div>
+
+  <label>Numero WhatsApp</label>
+  <input type="tel" id="numeroWhatsapp" placeholder="+39..." />
+
+  <label>Note per il venditore</label>
+  <textarea id="note" rows="3"></textarea>
+
+  <div id="anteprima" style="margin-top:24px; border:1px solid #ccc; padding:20px; text-align:center;">
+    <div id="targa" style="background-color:#eee; padding:20px; font-size:24px;"></div>
+  </div>
+
+  <button onclick="aggiornaAnteprima()">Aggiorna anteprima</button>
+  <button onclick="scaricaAnteprima()">Scarica anteprima</button>
+  <div style="text-align:center; font-weight:bold; font-size:20px; margin-top:20px;" id="totale">Totale: € 13.90</div>
+`;
+
+document.getElementById("citofonoToggle").addEventListener("change", (e) => {
+  document.getElementById("citofonoBox").style.display = e.target.checked ? "block" : "none";
 });
 
-// Funzioni principali
-function cambiaColore(colore) {
-  config.colore = colore;
-  document.getElementById('targa-preview').style.backgroundImage = 
-    `url('https://cdn.shopify.com/s/files/1/0871/1431/8172/files/${colore}.jpg')`;
-}
-
 function aggiornaAnteprima() {
-  config.testo = document.getElementById('testo-targa').value;
-  document.getElementById('anteprima-testo').textContent = config.testo;
+  const colore = document.getElementById("colore").value;
+  const font = document.getElementById("font").value;
+  const r1 = document.getElementById("riga1").value;
+  const r2 = document.getElementById("riga2").value;
+  const r3 = document.getElementById("riga3").value;
+  const decori = document.getElementById("decori").checked;
+  const citofono = document.getElementById("citofonoToggle").checked;
+  const quantita = parseInt(document.getElementById("quantita").value);
+
+  const base = 13.90;
+  const d = decori ? 1.90 : 0;
+  const c = citofono ? 3.99 : 0;
+  const totale = ((base + d + c) * quantita).toFixed(2);
+  document.getElementById("totale").innerText = "Totale: € " + totale;
+
+  const targaDiv = document.getElementById("targa");
+  targaDiv.innerHTML = `<div style="font-family:${font};">${r1}<br/>${r2}<br/>${r3}</div>`;
 }
 
-function cambiaFont(font) {
-  config.font = font;
-  document.getElementById('anteprima-testo').style.fontFamily = font;
-}
-
-function toggleDecorazioni() {
-  config.decorazioni = !config.decorazioni;
-  const targa = document.getElementById('targa-preview');
-  targa.style.backgroundImage = config.decorazioni 
-    ? `url('https://cdn.shopify.com/s/files/1/0871/1431/8172/files/${config.colore}_decorato.jpg')`
-    : `url('https://cdn.shopify.com/s/files/1/0871/1431/8172/files/${config.colore}.jpg')`;
-  calcolaPrezzo();
-}
-
-function toggleCitofono() {
-  config.citofono = !config.citofono;
-  document.getElementById('campo-citofono').classList.toggle('hidden');
-  calcolaPrezzo();
-}
-
-function aggiornaCitofono() {
-  config.testoCitofono = [
-    document.getElementById('citofono-linea1').value,
-    document.getElementById('citofono-linea2').value
-  ];
-  document.getElementById('anteprima-citofono-linea1').textContent = config.testoCitofono[0];
-  document.getElementById('anteprima-citofono-linea2').textContent = config.testoCitofono[1];
-}
-
-function calcolaPrezzo() {
-  let totale = PREZZO_BASE;
-  if (config.decorazioni) totale += PREZZO_DECORAZIONI;
-  if (config.citofono) totale += PREZZO_CITOFONO;
-  document.getElementById('prezzo-totale').textContent = totale.toFixed(2);
-}
-
-function aggiungiAlCarrello() {
-  // Preparazione dati per Shopify
-  const itemData = {
-    id: 14752947831132, // Sostituisci con il tuo product ID
-    quantity: 1,
-    properties: {
-      'Colore': config.colore,
-      'Testo': config.testo,
-      'Font': document.getElementById('select-font').options[document.getElementById('select-font').selectedIndex].text,
-      'Decorazioni': config.decorazioni ? 'Sì' : 'No',
-      'Citofono': config.citofono ? 'Sì' : 'No',
-      'Testo Citofono Linea 1': config.testoCitofono[0],
-      'Testo Citofono Linea 2': config.testoCitofono[1],
-      'Prezzo Totale': document.getElementById('prezzo-totale').textContent + '€'
-    }
-  };
-
-  // Integrazione con Shopify (sostituisci con il tuo effettivo codice)
-  console.log('Dati per Shopify:', itemData);
-  alert(`Configurazione aggiunta al carrello!\nTotale: ${document.getElementById('prezzo-totale').textContent}€`);
-  
-  // Per l'integrazione reale con Shopify, usa:
-  // window.parent.postMessage({ type: 'SHOPIFY_ADD_TO_CART', data: itemData }, '*');
+function scaricaAnteprima() {
+  html2canvas(document.getElementById("anteprima")).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "anteprima-targa.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
 }
